@@ -5,9 +5,12 @@
 ## Makefile
 ##$(CC) -o $(NAME) $(OBJ) $(CFLAGS)
 
-SRC = 	src/malloc.c	\
-		src/block.c		\
-		src/free.c
+SRC = 	src/malloc.c		\
+		src/block.c			\
+		src/free.c			\
+		src/calloc.c		\
+		src/realloc.c		\
+		src/reallocarray.c
 
 OBJ = $(SRC:%.c=%.o)
 
