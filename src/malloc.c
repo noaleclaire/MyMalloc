@@ -26,14 +26,15 @@ void *init_struct()
 
 void *malloc(size_t size)
 {
-    if (size == 0)
-        return (NULL);
     t_metaData current_block;
     t_metaData last_block = NULL;
+    size_t memorySize = 0;
 
+    if (size == 0)
+        return (NULL);
     if (size % 2 != 0)
         size += 1;
-    size_t memorySize = size + sizeof(struct s_metaData);
+    memorySize = size + sizeof(struct s_metaData);
 
     if (heap_start == NULL)
         heap_start = init_struct();

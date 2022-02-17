@@ -16,7 +16,7 @@ OBJ = $(SRC:%.c=%.o)
 
 CFLAGS = -Wall -I./include -fpic
 
-NAME = libmalloc.so
+NAME = libmy_malloc.so
 
 CC = gcc
 
