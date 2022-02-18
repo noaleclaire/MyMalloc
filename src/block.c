@@ -25,8 +25,6 @@ t_metaData find_free_block(t_metaData *last_block, size_t size)
     }
     return (best_block);
 }
-// first_node 4 = |[----]-------------|  |------------------|
-//second_node 5 = |[----][-----]--------|  |------------------|
 
 t_metaData add_block(t_metaData last_block, size_t size)
 {
