@@ -10,16 +10,25 @@
 t_metaData find_free_block(t_metaData *last_block, size_t size)
 {
     t_metaData current_block = heap_start;
+    t_metaData best_block = NULL;
+    int i = 0;
 
-    while (current_block && (!current_block->free ||
-    current_block->size < size)) {
+    while (current_block) {
+        if (i == 0 && current_block->free && current_block->size >= size) {
+            best_block = current_block;
+            i++;
+        } else if (i != 0 && current_block->free &&
+        current_block->size >= size && best_block->size > current_block->size)
+            best_block = current_block;
         *last_block = current_block;
         current_block = current_block->next;
     }
-    return (current_block);
+    return (best_block);
 }
+// first_node 4 = |[----]-------------|  |------------------|
+//second_node 5 = |[----][-----]--------|  |------------------|
 
-t_metaData increase_memory(t_metaData last_block, size_t size)
+t_metaData add_block(t_metaData last_block, size_t size)
 {
     t_metaData current_block;
 

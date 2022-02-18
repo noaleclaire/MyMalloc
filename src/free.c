@@ -35,5 +35,6 @@ void free(void *ptr)
     if (current_block->next == NULL) {
         current_block->before->next = NULL;
         sbrk(-current_block->size - sizeof(struct s_metaData));
+        current_block = sbrk(getpagesize() * 2);
     }
 }

@@ -12,6 +12,7 @@
 #include <string.h>
 
 typedef struct s_metaData {
+    size_t alloc_size;
     size_t size;
     struct s_metaData *next;
     struct s_metaData *before;
@@ -23,6 +24,6 @@ extern void *heap_start;
 
 t_metaData find_free_block(t_metaData *last_block, size_t size);
 void split_free_block(t_metaData current_block, size_t size);
-t_metaData increase_memory(t_metaData last_block, size_t size);
+t_metaData add_block(t_metaData last_block, size_t size);
 void *malloc(size_t size);
 void *realloc(void *ptr, size_t size);

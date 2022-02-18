@@ -9,6 +9,15 @@
 
 void *heap_start = NULL;
 
+size_t power_of_two(size_t size)
+{
+    size_t tmp = 1;
+
+    while (tmp < size)
+        tmp *= 2;
+    return (tmp);
+}
+
 void *init_struct()
 {
     t_metaData node = NULL;
@@ -32,14 +41,13 @@ void *malloc(size_t size)
 
     if (size == 0)
         return (NULL);
-    if (size % 2 != 0)
-        size += 1;
+    size = power_of_two(size);
     memorySize = size + sizeof(struct s_metaData);
 
     if (heap_start == NULL)
         heap_start = init_struct();
     if ((current_block = find_free_block(&last_block, size)) == NULL) {
-        if ((current_block = increase_memory(last_block, memorySize)) == NULL)
+        if ((current_block = add_block(last_block, memorySize)) == NULL)
             return (NULL);
     } else if (memorySize + sizeof(size_t) < current_block->size)
         split_free_block(current_block, memorySize);
