@@ -18,7 +18,7 @@ size_t power_of_two(size_t size)
     return (tmp);
 }
 
-void *init_struct()
+void *init_struct(void)
 {
     t_metaData node = NULL;
     if (node == NULL) {
@@ -37,20 +37,20 @@ void *malloc(size_t size)
 {
     t_metaData current_block;
     t_metaData last_block = NULL;
-    size_t memorySize = 0;
+    size_t memory_size = 0;
 
     if (size == 0)
         return (NULL);
     size = power_of_two(size);
-    memorySize = size + sizeof(struct s_metaData);
+    memory_size = size + sizeof(struct s_metaData);
 
     if (heap_start == NULL)
         heap_start = init_struct();
     if ((current_block = find_free_block(&last_block, size)) == NULL) {
-        if ((current_block = add_block(last_block, memorySize)) == NULL)
+        if ((current_block = add_block(last_block, memory_size)) == NULL)
             return (NULL);
-    } else if (memorySize + sizeof(size_t) < current_block->size)
-        split_free_block(current_block, memorySize);
+    } else if (memory_size + sizeof(size_t) < current_block->size)
+        split_free_block(current_block, memory_size);
     current_block->free = false;
     return (current_block->address);
 }
