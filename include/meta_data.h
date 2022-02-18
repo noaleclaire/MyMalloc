@@ -12,7 +12,6 @@
 #include <string.h>
 
 typedef struct s_metaData {
-    size_t alloc_size;
     size_t size;
     struct s_metaData *next;
     struct s_metaData *before;
