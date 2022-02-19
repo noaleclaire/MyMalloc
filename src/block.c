@@ -14,7 +14,8 @@ t_metaData find_free_block(t_metaData *last_block, size_t size)
     int i = 0;
 
     while (current_block) {
-        if (i == 0 && current_block->free && current_block->size >= size) {
+        if (i == 0 && current_block->free &&
+        current_block->size >= size) {
             best_block = current_block;
             i++;
         } else if (i != 0 && current_block->free &&
@@ -29,8 +30,12 @@ t_metaData find_free_block(t_metaData *last_block, size_t size)
 t_metaData add_block(t_metaData last_block, size_t size)
 {
     t_metaData current_block;
+    int multiple_page = (2 * getpagesize());
 
-    if ((current_block = sbrk(size)) == (void*) - 1)
+    while (multiple_page <= size)
+        multiple_page *= 2;
+    multiple_page -= size;
+    if ((current_block = sbrk(multiple_page + size)) == (void*) - 1)
         return (NULL);
     current_block->size = size - sizeof(struct s_metaData);
     current_block->next = NULL;

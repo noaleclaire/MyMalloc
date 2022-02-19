@@ -6,6 +6,7 @@
 */
 
 #include "../include/meta_data.h"
+#include <stdio.h>
 
 void *heap_start = NULL;
 
@@ -21,8 +22,11 @@ size_t power_of_two(size_t size)
 void *init_struct(void)
 {
     t_metaData node = NULL;
+    int multiple_page = (2 * getpagesize()) - sizeof(struct s_metaData);
+
     if (node == NULL) {
-        if ((node = sbrk(sizeof(struct s_metaData))) == (void*) -1)
+        if ((node = sbrk(multiple_page + sizeof(struct s_metaData)))
+        == (void*) -1)
             return (NULL);
         node->size = 0;
         node->next = NULL;
