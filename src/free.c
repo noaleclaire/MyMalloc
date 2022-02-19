@@ -20,6 +20,7 @@ t_metaData fusion_free_block(t_metaData current_block)
 void free(void *ptr)
 {
     t_metaData current_block;
+    int multiple_page = (2* getpagesize());
 
     if (ptr == NULL || ptr < heap_start || ptr > sbrk(0))
         return;
@@ -34,7 +35,11 @@ void free(void *ptr)
         current_block = fusion_free_block(current_block->before);
     if (current_block->next == NULL) {
         current_block->before->next = NULL;
-        sbrk(-current_block->size - sizeof(struct s_metaData));
+        while (multiple_page <= current_block->size +
+        sizeof(struct s_metaData))
+            multiple_page *= 2;
+        multiple_page -= current_block->size;
+        sbrk(-multiple_page - current_block->size - sizeof(struct s_metaData));
         current_block = sbrk(getpagesize() * 2);
     }
 }

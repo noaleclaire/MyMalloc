@@ -32,7 +32,7 @@ void *init_struct(void)
         node->next = NULL;
         node->before = NULL;
         node->free = false;
-        node->address = NULL;
+        node->address = node + 1;
     }
     return (node);
 }
