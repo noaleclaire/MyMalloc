@@ -38,7 +38,7 @@ void free(void *ptr)
         while (multiple_page <= current_block->size +
         sizeof(struct s_metaData))
             multiple_page *= 2;
-        multiple_page -= current_block->size;
+        multiple_page -= current_block->size + sizeof(struct s_metaData);
         sbrk(-multiple_page - current_block->size - sizeof(struct s_metaData));
         current_block = sbrk(getpagesize() * 2);
     }
