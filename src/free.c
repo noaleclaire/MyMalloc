@@ -20,7 +20,7 @@ t_metaData fusion_free_block(t_metaData current_block)
 void free(void *ptr)
 {
     t_metaData current_block;
-    int multiple_page = (2* getpagesize());
+    int multiple_page = (2 * getpagesize());
 
     if (ptr == NULL || ptr < heap_start || ptr > sbrk(0))
         return;
