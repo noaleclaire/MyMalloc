@@ -3,7 +3,7 @@
 ## Makefile
 ## File description:
 ## Makefile
-##$(CC) -o $(NAME) $(OBJ) $(CFLAGS)
+##
 
 SRC = 	src/malloc.c		\
 		src/block.c			\
@@ -39,6 +39,6 @@ unit_tests:	fclean all
 		make -C ./tests
 
 tests_run:	unit_tests
-		./tests/unit_test
+		./tests/unit_tests
 
 .PHONY:	all clean fclean re

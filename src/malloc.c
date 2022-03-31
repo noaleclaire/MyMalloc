@@ -21,11 +21,11 @@ size_t power_of_two(size_t size)
 
 void *init_struct(void)
 {
-    t_metaData node = NULL;
-    int multiple_page = (2 * getpagesize()) - sizeof(struct s_metaData);
+    t_meta_data node = NULL;
+    int multiple_page = (2 * getpagesize()) - sizeof(struct s_meta_data);
 
     if (node == NULL) {
-        if ((node = sbrk(multiple_page + sizeof(struct s_metaData)))
+        if ((node = sbrk(multiple_page + sizeof(struct s_meta_data)))
         == (void*) -1)
             return (NULL);
         node->size = 0;
@@ -39,14 +39,12 @@ void *init_struct(void)
 
 void *malloc(size_t size)
 {
-    t_metaData current_block;
-    t_metaData last_block = NULL;
+    t_meta_data current_block;
+    t_meta_data last_block = NULL;
     size_t memory_size = 0;
 
-    if (size == 0)
-        return (NULL);
     size = power_of_two(size);
-    memory_size = size + sizeof(struct s_metaData);
+    memory_size = size + sizeof(struct s_meta_data);
 
     if (heap_start == NULL)
         heap_start = init_struct();

@@ -7,10 +7,10 @@
 
 #include "../include/meta_data.h"
 
-t_metaData find_free_block(t_metaData *last_block, size_t size)
+t_meta_data find_free_block(t_meta_data *last_block, size_t size)
 {
-    t_metaData current_block = heap_start;
-    t_metaData best_block = NULL;
+    t_meta_data current_block = heap_start;
+    t_meta_data best_block = NULL;
     int i = 0;
 
     while (current_block) {
@@ -27,9 +27,9 @@ t_metaData find_free_block(t_metaData *last_block, size_t size)
     return (best_block);
 }
 
-t_metaData add_block(t_metaData last_block, size_t size)
+t_meta_data add_block(t_meta_data last_block, size_t size)
 {
-    t_metaData current_block;
+    t_meta_data current_block;
     int multiple_page = (2 * getpagesize());
 
     while (multiple_page <= size)
@@ -37,7 +37,7 @@ t_metaData add_block(t_metaData last_block, size_t size)
     multiple_page -= size;
     if ((current_block = sbrk(multiple_page + size)) == (void*) - 1)
         return (NULL);
-    current_block->size = size - sizeof(struct s_metaData);
+    current_block->size = size - sizeof(struct s_meta_data);
     current_block->next = NULL;
     current_block->before = last_block;
     current_block->address = current_block + 1;
@@ -45,9 +45,9 @@ t_metaData add_block(t_metaData last_block, size_t size)
     return (current_block);
 }
 
-void split_free_block(t_metaData current_block, size_t size)
+void split_free_block(t_meta_data current_block, size_t size)
 {
-    t_metaData split_block = (t_metaData)((char*)current_block + size);
+    t_meta_data split_block = (t_meta_data)((char*)current_block + size);
     split_block->size = current_block->size - size;
     split_block->next = current_block->next;
     split_block->before = current_block;
@@ -56,5 +56,5 @@ void split_free_block(t_metaData current_block, size_t size)
     if (current_block->next)
         current_block->next->before = split_block;
     current_block->next = split_block;
-    current_block->size = size - sizeof(struct s_metaData);
+    current_block->size = size - sizeof(struct s_meta_data);
 }

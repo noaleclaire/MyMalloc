@@ -7,9 +7,9 @@
 
 #include "../include/meta_data.h"
 
-t_metaData fusion_free_block(t_metaData current_block)
+t_meta_data fusion_free_block(t_meta_data current_block)
 {
-    current_block->size += sizeof(struct s_metaData)
+    current_block->size += sizeof(struct s_meta_data)
     + current_block->next->size;
     current_block->next = current_block->next->next;
     if (current_block->next != NULL)
@@ -19,16 +19,14 @@ t_metaData fusion_free_block(t_metaData current_block)
 
 void free(void *ptr)
 {
-    t_metaData current_block;
+    t_meta_data current_block;
     int multiple_page = (2 * getpagesize());
-
     if (ptr == NULL || ptr < heap_start || ptr > sbrk(0))
         return;
-    current_block = (t_metaData) ptr - 1;
+    current_block = (t_meta_data) ptr - 1;
     if (current_block->address != ptr)
         return;
     current_block->free = true;
-
     if (current_block->next && current_block->next->free)
         current_block = fusion_free_block(current_block);
     if (current_block->before->free)
@@ -36,9 +34,9 @@ void free(void *ptr)
     if (current_block->next == NULL) {
         current_block->before->next = NULL;
         while (multiple_page <= current_block->size +
-        sizeof(struct s_metaData))
+        sizeof(struct s_meta_data))
             multiple_page *= 2;
-        multiple_page -= current_block->size + sizeof(struct s_metaData);
-        sbrk(-multiple_page - current_block->size - sizeof(struct s_metaData));
+        multiple_page -= current_block->size + sizeof(struct s_meta_data);
+        sbrk(-multiple_page -current_block->size -sizeof(struct s_meta_data));
     }
 }

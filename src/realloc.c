@@ -7,27 +7,39 @@
 
 #include "../include/meta_data.h"
 
-void *realloc(void *ptr, size_t size)
+#include <stdio.h>
+
+void *realloc2(void *ptr, size_t size, size_t tmp_size,
+t_meta_data current_block)
 {
-    t_metaData current_block;
     void *new_ptr = NULL;
 
-    if (ptr == NULL && size != 0)
+    new_ptr = malloc(size);
+    if (new_ptr == NULL)
+        return (NULL);
+    if (new_ptr != ptr && tmp_size < current_block->size)
+        memcpy(new_ptr, ptr, tmp_size);
+    else if (new_ptr != ptr)
+        memcpy(new_ptr, ptr, current_block->size);
+    free(ptr);
+    return (new_ptr);
+}
+
+void *realloc(void *ptr, size_t size)
+{
+    t_meta_data current_block;
+    size_t tmp_size = power_of_two(size);
+
+    if (ptr == NULL)
         return (malloc(size));
-    current_block = (t_metaData) ptr - 1;
+    current_block = (t_meta_data) ptr - 1;
     if (current_block->address != ptr)
         return (ptr);
     if (size == 0) {
         free(ptr);
         return (NULL);
     }
-    if (current_block->size == size)
+    if (current_block->size == tmp_size)
         return (ptr);
-    new_ptr = malloc(size);
-    if (new_ptr != ptr && size < current_block->size)
-        memcpy(new_ptr, ptr, size);
-    else if (new_ptr != ptr)
-        memcpy(new_ptr, ptr, current_block->size);
-    free(ptr);
-    return (new_ptr);
+    return (realloc2(ptr, size, tmp_size, current_block));
 }
